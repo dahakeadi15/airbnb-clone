@@ -1,22 +1,18 @@
 "use client";
 
-import axios from 'axios';
+import axios from "axios";
 import { AiFillGithub } from "react-icons/ai";
 import { FcGoogle } from "react-icons/fc";
-import { useCallback, useState } from 'react';
-import {
-  FieldValues,
-  SubmitHandler,
-  useForm
-} from "react-hook-form";
+import { useCallback, useState } from "react";
+import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 
-import useRegisterModal from '@/app/Hooks/useRegisterModal';
-import Modal from './Modal';
-import Button from '../Button';
-import Heading from '../Heading';
-import Input from '../inputs/Input';
-import { toast } from 'react-hot-toast';
-
+import useRegisterModal from "@/app/Hooks/useRegisterModal";
+import Modal from "./Modal";
+import Button from "../Button";
+import Heading from "../Heading";
+import Input from "../inputs/Input";
+import { toast } from "react-hot-toast";
+import { signIn } from "next-auth/react";
 
 const RegisterModal = () => {
   const registerModal = useRegisterModal();
@@ -25,23 +21,22 @@ const RegisterModal = () => {
   const {
     register,
     handleSubmit,
-    formState: {
-      errors,
-    }
+    formState: { errors },
   } = useForm<FieldValues>({
     defaultValues: {
-      name: '',
-      email: '',
-      password: ''
+      name: "",
+      email: "",
+      password: "",
     },
   });
 
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
     setIsLoading(true);
 
-    axios.post('/api/register', data)
+    axios
+      .post("/api/register", data)
       .then(() => {
-        toast.success('Registered!');
+        toast.success("Registered!");
         registerModal.onClose();
       })
       .catch((error) => {
@@ -58,10 +53,7 @@ const RegisterModal = () => {
 
   const bodyContent = (
     <div className="flex flex-col gap-4">
-      <Heading
-        title="Welcome to Airbnb"
-        subtitle="Create an account!"
-      />
+      <Heading title="Welcome to Airbnb" subtitle="Create an account!" />
       <Input
         id="email"
         label="Email"
@@ -97,13 +89,13 @@ const RegisterModal = () => {
         outline
         label="Continue with Google"
         icon={FcGoogle}
-        onClick={() => { }}
+        onClick={() => signIn("google")}
       />
       <Button
         outline
         label="Continue with Github"
         icon={AiFillGithub}
-        onClick={() => { }}
+        onClick={() => signIn("github")}
       />
       <div
         className="
@@ -113,7 +105,8 @@ const RegisterModal = () => {
           font-light
         "
       >
-        <p>Already have an account?
+        <p>
+          Already have an account?
           <span
             onClick={onToggle}
             className="
@@ -121,7 +114,10 @@ const RegisterModal = () => {
               cursor-pointer 
               hover:underline
             "
-          > Log in</span>
+          >
+            {" "}
+            Log in
+          </span>
         </p>
       </div>
     </div>
