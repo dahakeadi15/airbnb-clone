@@ -1,18 +1,18 @@
 "use client";
 
+import { toast } from "react-hot-toast";
+import axios from "axios";
+import { useCallback, useState } from "react";
 import { useRouter } from "next/navigation";
 
-import Container from "../components/Container";
-import Heading from "../components/Heading";
-import { SafeUser, safeReservation } from "../types";
-import { useCallback, useState } from "react";
-import axios from "axios";
-import toast from "react-hot-toast";
-import { error } from "console";
-import ListingCard from "../components/listings/ListingCard";
+import { SafeReservation, SafeUser } from "@/app/types";
+
+import Heading from "@/app/components/Heading";
+import Container from "@/app/components/Container";
+import ListingCard from "@/app/components/listings/ListingCard";
 
 interface TripsClientProps {
-  reservations: safeReservation[];
+  reservations: SafeReservation[];
   currentUser?: SafeUser | null;
 }
 
@@ -34,7 +34,7 @@ const TripsClient: React.FC<TripsClientProps> = ({
           router.refresh();
         })
         .catch((error) => {
-          toast.error(error?.response?.data?.error || "Something went wrong");
+          toast.error(error?.response?.data?.error);
         })
         .finally(() => {
           setDeletingId("");
@@ -52,10 +52,10 @@ const TripsClient: React.FC<TripsClientProps> = ({
       <div
         className="
           mt-10
-          grid
-          grid-cols-1
-          sm:grid-cols-2
-          md:grid-cols-3
+          grid 
+          grid-cols-1 
+          sm:grid-cols-2 
+          md:grid-cols-3 
           lg:grid-cols-4
           xl:grid-cols-5
           2xl:grid-cols-6
